@@ -1,10 +1,10 @@
-import './ListaOggetti.css';
+// import './ListaOggetti.css';
 export default function ListaOggetti() {
     const NOME_LISTA = "eventi";
     // USE STATE
     const [eventi, setEventi] = useState(() => {
         const eventiSalvati = localStorage.getItem(NOME_LISTA);
-        return eventiSalvati ? JSON.parse(eventiSalvati) : [];
+        return eventiSalvati ? JSON.parse(eventiSalvati) : [];  
     });
 
     const [titolo,setTitolo] = useState("");
@@ -23,7 +23,7 @@ export default function ListaOggetti() {
 
     function aggiungiEvento() {
         if(!titolo.trim() || data.trim() || luogo.trim() || categoria.trim() || prezzo.trim()) return; //controllo? solo titolo?
-        const nuovoUtente = {
+        const nuovoEvento = {
             titolo: titolo.trim(),
             data: data.trim(),
             luogo: luogo.trim(),
@@ -35,7 +35,6 @@ export default function ListaOggetti() {
             setUtenti(arrayPrecedentementeSalvato =>
                 arrayPrecedentementeSalvato.map((evento,indice) => (indice === indiceModifica) ? nuovoEvento : evento)
             );
-
             setModalitaModifica(false);
         } else {
             setUtenti(arrayPrecedentementeSalvato => [...arrayPrecedentementeSalvato, nuovoEvento]);
@@ -47,7 +46,7 @@ export default function ListaOggetti() {
         setData("");
         setLuogo("");
         setCategoria("");
-        setIndiceModifica("");
+        setPrezzo("");
     }
 
     function eliminaEvento(index) {
@@ -61,47 +60,60 @@ export default function ListaOggetti() {
 
     function modificaEvento(indice) {
         setModalitaModifica(true);
-        const utenteDaModificare = eventi[indice];
+        const eventoDaModificare = eventi[indice];
         setTitolo(eventoDaModificare.titolo);
         setData(eventoDaModificare.data);
         setLuogo(eventoDaModificare.luogo);
         setCategoria(eventoDaModificare.categoria);
+        setPrezzo(eventoDaModificare.prezzo);
         setIndiceModifica(indice);
     }
 
     return (
 
+
+
+        
+        // setTitolo("");
+        // setData("");
+        // setLuogo("");
+        // setCategoria("");
+        // setPrezzo("");
+        
+        
         <div>
             <input type="text" value={titolo} placeholder="Inserisci titolo" onChange={(e) => setTitolo(e.target.value)} required />
             <input type="text" value={data} placeholder="Inserisci data" onChange={(e) => setData(e.target.value)} required/>
-            <input type="text" value={residenza} placeholder="Inserisci residenza" onChange={(e) => setResidenza(e.target.value)} required/>
-            <input type="number" value={eta} placeholder="Inserisci età" onChange={(e) => setEta(e.target.value)} required/>
+            <input type="text" value={luogo} placeholder="Inserisci luogo" onChange={(e) => setLuogo(e.target.value)} required/>
+            <input type="number" value={categoria} placeholder="Inserisci categoria" onChange={(e) => setCategoria(e.target.value)} required/>
+            <input type="number" value={prezzo} placeholder="Inserisci prezzo" onChange={(e) => setPrezzo(e.target.value)} required/>
             {modalitaModifica ?
-                <button onClick={aggiungiUtente}>Aggiorna utente</button>
+                <button onClick={modificaEvento}>Aggiorna Evento</button>
                 :
-                <button onClick={aggiungiUtente}>Aggiungi utente</button>
+                <button onClick={aggiungiEvento}>Aggiungi Evento</button>
             }
 
             <table border="1" style={{"padding":"10px"}}>
                 <thead>
                     <tr>
-                        <th>Nome</th>
-                        <th>Cognome</th>
-                        <th>Residenza</th>
-                        <th>Età</th>
-                        <th>Azioni</th>
+                        <th>Titolo</th>
+                        <th>Data</th>
+                        <th>Luogo</th>
+                        <th>Categoria</th>
+                        <th>Prezzo</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {utenti.map((utente,indice) => (
+                    {utenti.map((evento,indice) => (
                         <tr key={indice}>
-                            <td>{utente.nome}</td>
-                            <td>{utente.cognome}</td>
-                            <td>{utente.residenza}</td>
-                            <td>{utente.eta}</td>
+                            <td>{evento.titolo}</td>
+                            <td>{evento.data}</td>
+                            <td>{evento.luogo}</td>
+                            <td>{evento.categoria}</td>
+                            <td>{evento.prezzo}</td>
                             <td>
-                                <button onClick={() => modificaUtente(indice)}>Modifica</button>
-                                <button onClick={() => eliminaUtente(indice)}>Elimina</button>
+                                <button onClick={() => modificaEvento(indice)}>Modifica</button>
+                                <button onClick={() => eliminaEvento(indice)}>Elimina</button>
                            </td>
                         </tr>
                     ))}
