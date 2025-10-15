@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+
 // import './ListaOggetti.css';
 export default function ListaOggetti() {
     const NOME_LISTA = "eventi";
@@ -7,7 +8,7 @@ export default function ListaOggetti() {
         const eventiSalvati = localStorage.getItem(NOME_LISTA);
         return eventiSalvati ? JSON.parse(eventiSalvati) : [];  
     });
-
+    const [eventiFiltrati, setEventiFiltrati] = useState([])
     const [titolo,setTitolo] = useState("");
     const [data,setData] = useState("");
     const [luogo,setLuogo] = useState("");
@@ -50,6 +51,11 @@ export default function ListaOggetti() {
         setPrezzo("");
     }
 
+    function cercaEvento(titoloDaCercare, luogoDacercare, prezzoDaCercare, categoriaDaCercare, dataDaCercare) {
+        const eventiCarcati = eventi.filter(evento => evento.titolo === titoloDaCercare || evento.luogo === luogoDacercare || evento.prezzo === prezzoDaCercare || evento.categoria === categoriaDaCercare || evento.data === dataDaCercare);
+        setEventiFiltrati(eventiCarcati);
+    }
+
     function eliminaEvento(index) {
 
         if(window.confirm("Sei sicuro di eliminare questo evento?")) {
@@ -72,50 +78,88 @@ export default function ListaOggetti() {
     }
 
     return (
-
-        <div>
-            <div className="card">
-                <input type="text" value={titolo} placeholder="Inserisci titolo" onChange={(e) => setTitolo(e.target.value)} required />
-                <input type="text" value={data} placeholder="Inserisci data" onChange={(e) => setData(e.target.value)} required/>
-                <input type="text" value={luogo} placeholder="Inserisci luogo" onChange={(e) => setLuogo(e.target.value)} required/>
-                <input type="text" value={categoria} placeholder="Inserisci categoria" onChange={(e) => setCategoria(e.target.value)} required/>
-                <input type="number" value={prezzo} placeholder="Inserisci prezzo" onChange={(e) => setPrezzo(e.target.value)} required/>
-                {modalitaModifica ?
-                    <button onClick={aggiungiEvento}>Aggiorna Evento</button>
-                    :
-                    <button onClick={aggiungiEvento}>Aggiungi Evento</button>
-                }
+        <div className="tutto">
+            <div className="row">
+                <div className="col">
+                    <div className="card p-3">
+                        <input
+                            type="text"
+                            value={titolo}
+                            placeholder="Inserisci titolo"
+                            onChange={(e) => setTitolo(e.target.value)}
+                            required
+                            className="form-control mb-2"
+                        />
+                        <input
+                          type="text"
+                            value={data}
+                            placeholder="Inserisci data"
+                            onChange={(e) => setData(e.target.value)}
+                            required
+                            className="form-control mb-2"
+                        />
+                        <input
+                            type="text"
+                            value={luogo}
+                            placeholder="Inserisci luogo"
+                            onChange={(e) => setLuogo(e.target.value)}
+                            required
+                            className="form-control mb-2"
+                        />
+                        <input
+                            type="text"
+                            value={categoria}
+                            placeholder="Inserisci categoria"
+                            onChange={(e) => setCategoria(e.target.value)}
+                            required
+                            className="form-control mb-2"
+                        />
+                        <input
+                            type="number"
+                            value={prezzo}
+                            placeholder="Inserisci prezzo"
+                            onChange={(e) => setPrezzo(e.target.value)}
+                            required
+                            className="form-control mb-3"
+                        />
+                        <button className="btn btn-primary" onClick={aggiungiEvento}>
+                            {modalitaModifica ? 'Aggiorna Evento' : 'Aggiungi Evento'}
+                        </button>
+                        <br />
+                        <button className="btn btn-primary" onClick={cercaEvento}>
+                        Cerca Evento
+                        </button>
+                    </div>
+                </div>
+                <div className="events ">
+                {eventi.map((eventiFiltrati, indice) => (
+                    <div className="card mb-3" style={{ width: '18rem' }} key={indice}>
+                    <div className="card-body">
+                        <h5 className="card-title">{eventiFiltrati.titolo}</h5>
+                        <p className="card-text">{eventiFiltrati.data}</p>
+                        <p className="card-text">{eventiFiltrati.luogo}</p>
+                        <p className="card-text">{eventiFiltrati.categoria}</p>
+                        <p className="card-text">{eventiFiltrati.prezzo}</p>
+                        <div>
+                        <button
+                            className="btn btn-warning me-2"
+                            onClick={() => modificaEvento(indice)}
+                        >
+                            Modifica
+                        </button>
+                        <button
+                            className="btn btn-danger"
+                            onClick={() => eliminaEvento(indice)}
+                        >
+                            Elimina
+                        </button>
+                        </div>
+                    </div>
+                    </div>
+                ))}
+                </div>
             </div>
-
-            
-{/* 
-            <table border="1" style={{"padding":"10px"}}>
-                <thead>
-                    <tr>
-                        <th className="colore">Titolo</th>
-                        <th className="colore">Data</th>
-                        <th className="colore">Luogo</th>
-                        <th className="colore">Categoria</th>
-                        <th className="colore">Prezzo</th>
-                        <th className="colore">Azione</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {eventi.map((evento,indice) => (
-                        <tr key={indice}>
-                            <td>{evento.titolo}</td>
-                            <td>{evento.data}</td>
-                            <td>{evento.luogo}</td>
-                            <td>{evento.categoria}</td>
-                            <td>{evento.prezzo}</td>
-                            <td>
-                                <button onClick={() => modificaEvento(indice)}>Modifica</button>
-                                <button onClick={() => eliminaEvento(indice)}>Elimina</button>
-                           </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table> */}
         </div>
+
     );
 }
