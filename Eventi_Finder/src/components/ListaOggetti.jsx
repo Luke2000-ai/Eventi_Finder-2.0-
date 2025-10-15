@@ -12,7 +12,7 @@ export default function ListaOggetti() {
     const [data,setData] = useState("");
     const [luogo,setLuogo] = useState("");
     const [categoria,setCategoria] = useState("");
-    const [prezzo, setPrezzo] = useState(null);
+    const [prezzo, setPrezzo] = useState("");
     const [modalitaModifica, setModalitaModifica] = useState(false);
     const [indiceModifica, setIndiceModifica] = useState("");
 
@@ -23,8 +23,8 @@ export default function ListaOggetti() {
     },[eventi]);
 
     function aggiungiEvento() {
-        if(!titolo.trim() || !data.trim() || !luogo.trim() || !categoria.trim() || !prezzo.trim()) return; //controllo? solo titolo?
-        const nuovoEvento = {
+        if(!titolo.trim() || !data.trim() || !luogo.trim() || !categoria.trim() || !prezzo) return; 
+            const nuovoEvento = {
             titolo: titolo.trim(),
             data: data.trim(),
             luogo: luogo.trim(),
@@ -67,23 +67,28 @@ export default function ListaOggetti() {
         setLuogo(eventoDaModificare.luogo);
         setCategoria(eventoDaModificare.categoria);
         setPrezzo(eventoDaModificare.prezzo);
-        setIndiceModifica(eventoDaModificare.indice);
+        setIndiceModifica(indice);
+
     }
 
     return (
 
         <div>
-            <input type="text" value={titolo} placeholder="Inserisci titolo" onChange={(e) => setTitolo(e.target.value)} required />
-            <input type="text" value={data} placeholder="Inserisci data" onChange={(e) => setData(e.target.value)} required/>
-            <input type="text" value={luogo} placeholder="Inserisci luogo" onChange={(e) => setLuogo(e.target.value)} required/>
-            <input type="text" value={categoria} placeholder="Inserisci categoria" onChange={(e) => setCategoria(e.target.value)} required/>
-            <input type="number" value={prezzo} placeholder="Inserisci prezzo" onChange={(e) => setPrezzo(e.target.value)} required/>
-            {modalitaModifica ?
-                <button onClick={modificaEvento}>Aggiorna Evento</button>
-                :
-                <button onClick={aggiungiEvento}>Aggiungi Evento</button>
-            }
+            <div className="card">
+                <input type="text" value={titolo} placeholder="Inserisci titolo" onChange={(e) => setTitolo(e.target.value)} required />
+                <input type="text" value={data} placeholder="Inserisci data" onChange={(e) => setData(e.target.value)} required/>
+                <input type="text" value={luogo} placeholder="Inserisci luogo" onChange={(e) => setLuogo(e.target.value)} required/>
+                <input type="text" value={categoria} placeholder="Inserisci categoria" onChange={(e) => setCategoria(e.target.value)} required/>
+                <input type="number" value={prezzo} placeholder="Inserisci prezzo" onChange={(e) => setPrezzo(e.target.value)} required/>
+                {modalitaModifica ?
+                    <button onClick={aggiungiEvento}>Aggiorna Evento</button>
+                    :
+                    <button onClick={aggiungiEvento}>Aggiungi Evento</button>
+                }
+            </div>
 
+            
+{/* 
             <table border="1" style={{"padding":"10px"}}>
                 <thead>
                     <tr>
@@ -110,7 +115,7 @@ export default function ListaOggetti() {
                         </tr>
                     ))}
                 </tbody>
-            </table>
+            </table> */}
         </div>
     );
 }
