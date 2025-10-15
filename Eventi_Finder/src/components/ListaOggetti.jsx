@@ -41,31 +41,34 @@ export default function ListaOggetti() {
         } else {
             setEventi(arrayPrecedentementeSalvato => [...arrayPrecedentementeSalvato, nuovoEvento]);
         }
-
-        // svuoto i campi di input
-
-        setTitolo("");
-        setData("");
-        setLuogo("");
-        setCategoria("");
-        setPrezzo("");
+        pulisciCampi();
     }
 
     function cercaEvento() {     
-        console.log("eventi", eventi)   
-        setEventiCercati(eventi.filter(e => e.titolo === titolo || e.luogo === luogo || e.prezzo == prezzo || e.categoria === categoria || e.data === data));
-        console.log("eventiCercati", eventiCercati);
-        setTitolo("");
-        setData("");
-        setLuogo("");
-        setCategoria("");
-        setPrezzo("");
+        // console.log("titolo", titolo, "luogo", luogo, "prezzo", prezzo, "categoria", categoria, "data", data)
+        let eventiCercati = [];
+        if(!titolo.trim() && !data.trim() && !luogo.trim() && !categoria.trim() && !prezzo){
+            setEventiCercati(eventi);
+        } else {
+            eventiCercati = eventi.filter(e => 
+                e.titolo.toLowerCase().some(titolo.trim().toLowerCase()) ||
+                e.luogo.toLowerCase().some(luogo.trim().toLowerCase()) ||
+                e.categoria.toLowerCase().some(categoria.trim().toLowerCase()) ||
+                e.data.toLowerCase().some(data.trim().toLowerCase()) ||
+                e.prezzo == prezzo
+                );
+            setEventiCercati(eventiCercati)
+        }
+        console.log("eventiCercati", eventiCercati)
+        console.log("eventi", eventi)
+        pulisciCampi();
     }
+    
 
     function eliminaEvento(index) {
-
         if(window.confirm("Sei sicuro di eliminare questo evento?")) {
             setEventi(arrayPrecedentementeSalvato => arrayPrecedentementeSalvato.filter((_,i) => i !== index));
+            setEventiCercati(eventi);
         }
     }
 
@@ -80,7 +83,14 @@ export default function ListaOggetti() {
         setCategoria(eventoDaModificare.categoria);
         setPrezzo(eventoDaModificare.prezzo);
         setIndiceModifica(indice);
-
+    }
+    
+    function pulisciCampi(){
+        setTitolo("");
+        setData("");
+        setLuogo("");
+        setCategoria("");
+        setPrezzo("");
     }
 
     return (
@@ -133,34 +143,28 @@ export default function ListaOggetti() {
                         </button>
                         <br />
                         <button className="btn btn-primary" onClick={cercaEvento}>
-                        Cerca Evento
+                        Cerca Evento / Cerca Tutti
                         </button>
                     </div>
                 </div>
                 <div className="events ">
                 {eventiCercati.map((e, indice) => (
                     <div className="card mb-3" style={{ width: '18rem' }} key={indice}>
-                    <div className="card-body">
-                        <h5 className="card-title">{e.titolo}</h5>
-                        <p className="card-text">{e.data}</p>
-                        <p className="card-text">{e.luogo}</p>
-                        <p className="card-text">{e.categoria}</p>
-                        <p className="card-text">{e.prezzo}</p>
-                        <div>
-                        <button
-                            className="btn btn-warning me-2"
-                            onClick={() => modificaEvento(indice)}
-                        >
-                            Modifica
-                        </button>
-                        <button
-                            className="btn btn-danger"
-                            onClick={() => eliminaEvento(indice)}
-                        >
-                            Elimina
-                        </button>
+                        <div className="card-body">
+                            <h5 className="card-title">{e.titolo}</h5>
+                            <p className="card-text">{e.data}</p>
+                            <p className="card-text">{e.luogo}</p>
+                            <p className="card-text">{e.categoria}</p>
+                            <p className="card-text">{e.prezzo}</p>
+                            <div>
+                                <button className="btn btn-warning me-2" onClick={() => modificaEvento(indice)}>
+                                    Modifica
+                                </button>
+                                <button className="btn btn-danger" onClick={() => eliminaEvento(indice)}>
+                                    Elimina
+                                </button>
+                            </div>
                         </div>
-                    </div>
                     </div>
                 ))}
                 </div>
