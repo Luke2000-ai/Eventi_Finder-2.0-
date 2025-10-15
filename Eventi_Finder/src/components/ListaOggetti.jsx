@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 // import './ListaOggetti.css';
 export default function ListaOggetti() {
     const NOME_LISTA = "eventi";
@@ -66,7 +67,7 @@ export default function ListaOggetti() {
         setLuogo(eventoDaModificare.luogo);
         setCategoria(eventoDaModificare.categoria);
         setPrezzo(eventoDaModificare.prezzo);
-        setIndiceModifica(indice);
+        setIndiceModifica(eventoDaModificare.indice);
     }
 
     return (
@@ -86,11 +87,12 @@ export default function ListaOggetti() {
             <table border="1" style={{"padding":"10px"}}>
                 <thead>
                     <tr>
-                        <th>Titolo</th>
-                        <th>Data</th>
-                        <th>Luogo</th>
-                        <th>Categoria</th>
-                        <th>Prezzo</th>
+                        <th className="colore">Titolo</th>
+                        <th className="colore">Data</th>
+                        <th className="colore">Luogo</th>
+                        <th className="colore">Categoria</th>
+                        <th className="colore">Prezzo</th>
+                        <th className="colore">Azione</th>
                     </tr>
                 </thead>
                 <tbody>
