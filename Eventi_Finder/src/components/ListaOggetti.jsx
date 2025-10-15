@@ -11,7 +11,7 @@ export default function ListaOggetti() {
     const [data,setData] = useState("");
     const [luogo,setLuogo] = useState("");
     const [categoria,setCategoria] = useState("");
-    const [prezzo, setPrezzo] = useState("");
+    const [prezzo, setPrezzo] = useState(null);
     const [modalitaModifica, setModalitaModifica] = useState(false);
     const [indiceModifica, setIndiceModifica] = useState("");
 
@@ -22,7 +22,7 @@ export default function ListaOggetti() {
     },[eventi]);
 
     function aggiungiEvento() {
-        if(!titolo.trim() || data.trim() || luogo.trim() || categoria.trim() || prezzo.trim()) return; //controllo? solo titolo?
+        if(!titolo.trim() || !data.trim() || !luogo.trim() || !categoria.trim() || !prezzo.trim()) return; //controllo? solo titolo?
         const nuovoEvento = {
             titolo: titolo.trim(),
             data: data.trim(),
@@ -32,12 +32,12 @@ export default function ListaOggetti() {
         };
 
         if(modalitaModifica) {
-            setUtenti(arrayPrecedentementeSalvato =>
+            setEventi(arrayPrecedentementeSalvato =>
                 arrayPrecedentementeSalvato.map((evento,indice) => (indice === indiceModifica) ? nuovoEvento : evento)
             );
             setModalitaModifica(false);
         } else {
-            setUtenti(arrayPrecedentementeSalvato => [...arrayPrecedentementeSalvato, nuovoEvento]);
+            setEventi(arrayPrecedentementeSalvato => [...arrayPrecedentementeSalvato, nuovoEvento]);
         }
 
         // svuoto i campi di input
@@ -71,21 +71,11 @@ export default function ListaOggetti() {
 
     return (
 
-
-
-        
-        // setTitolo("");
-        // setData("");
-        // setLuogo("");
-        // setCategoria("");
-        // setPrezzo("");
-        
-        
         <div>
             <input type="text" value={titolo} placeholder="Inserisci titolo" onChange={(e) => setTitolo(e.target.value)} required />
             <input type="text" value={data} placeholder="Inserisci data" onChange={(e) => setData(e.target.value)} required/>
             <input type="text" value={luogo} placeholder="Inserisci luogo" onChange={(e) => setLuogo(e.target.value)} required/>
-            <input type="number" value={categoria} placeholder="Inserisci categoria" onChange={(e) => setCategoria(e.target.value)} required/>
+            <input type="text" value={categoria} placeholder="Inserisci categoria" onChange={(e) => setCategoria(e.target.value)} required/>
             <input type="number" value={prezzo} placeholder="Inserisci prezzo" onChange={(e) => setPrezzo(e.target.value)} required/>
             {modalitaModifica ?
                 <button onClick={modificaEvento}>Aggiorna Evento</button>
@@ -104,7 +94,7 @@ export default function ListaOggetti() {
                     </tr>
                 </thead>
                 <tbody>
-                    {utenti.map((evento,indice) => (
+                    {eventi.map((evento,indice) => (
                         <tr key={indice}>
                             <td>{evento.titolo}</td>
                             <td>{evento.data}</td>
