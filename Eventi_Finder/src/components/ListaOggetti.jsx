@@ -8,7 +8,7 @@ export default function ListaOggetti() {
         const eventiSalvati = localStorage.getItem(NOME_LISTA);
         return eventiSalvati ? JSON.parse(eventiSalvati) : [];  
     });
-    const [eventiFiltrati, setEventiFiltrati] = useState([])
+    const [eventiCercati, setEventiCercati] = useState([])
     const [titolo,setTitolo] = useState("");
     const [data,setData] = useState("");
     const [luogo,setLuogo] = useState("");
@@ -51,9 +51,15 @@ export default function ListaOggetti() {
         setPrezzo("");
     }
 
-    function cercaEvento(titoloDaCercare, luogoDacercare, prezzoDaCercare, categoriaDaCercare, dataDaCercare) {
-        const eventiCarcati = eventi.filter(evento => evento.titolo === titoloDaCercare || evento.luogo === luogoDacercare || evento.prezzo === prezzoDaCercare || evento.categoria === categoriaDaCercare || evento.data === dataDaCercare);
-        setEventiFiltrati(eventiCarcati);
+    function cercaEvento() {     
+        console.log("eventi", eventi)   
+        setEventiCercati(eventi.filter(e => e.titolo === titolo || e.luogo === luogo || e.prezzo == prezzo || e.categoria === categoria || e.data === data));
+        console.log("eventiCercati", eventiCercati);
+        setTitolo("");
+        setData("");
+        setLuogo("");
+        setCategoria("");
+        setPrezzo("");
     }
 
     function eliminaEvento(index) {
@@ -132,14 +138,14 @@ export default function ListaOggetti() {
                     </div>
                 </div>
                 <div className="events ">
-                {eventi.map((eventiFiltrati, indice) => (
+                {eventiCercati.map((e, indice) => (
                     <div className="card mb-3" style={{ width: '18rem' }} key={indice}>
                     <div className="card-body">
-                        <h5 className="card-title">{eventiFiltrati.titolo}</h5>
-                        <p className="card-text">{eventiFiltrati.data}</p>
-                        <p className="card-text">{eventiFiltrati.luogo}</p>
-                        <p className="card-text">{eventiFiltrati.categoria}</p>
-                        <p className="card-text">{eventiFiltrati.prezzo}</p>
+                        <h5 className="card-title">{e.titolo}</h5>
+                        <p className="card-text">{e.data}</p>
+                        <p className="card-text">{e.luogo}</p>
+                        <p className="card-text">{e.categoria}</p>
+                        <p className="card-text">{e.prezzo}</p>
                         <div>
                         <button
                             className="btn btn-warning me-2"
