@@ -46,18 +46,20 @@ export default function ListaOggetti() {
 
     function cercaEvento() {     
         // console.log("titolo", titolo, "luogo", luogo, "prezzo", prezzo, "categoria", categoria, "data", data)
-        let eventiCercati = [];
+        let paolo = [];
         if(!titolo.trim() && !data.trim() && !luogo.trim() && !categoria.trim() && !prezzo){
             setEventiCercati(eventi);
         } else {
-            eventiCercati = eventi.filter(e => 
-                e.titolo.toLowerCase().some(titolo.trim().toLowerCase()) ||
-                e.luogo.toLowerCase().some(luogo.trim().toLowerCase()) ||
-                e.categoria.toLowerCase().some(categoria.trim().toLowerCase()) ||
-                e.data.toLowerCase().some(data.trim().toLowerCase()) ||
-                e.prezzo == prezzo
-                );
-            setEventiCercati(eventiCercati)
+            // paolo = eventi.filter(e => {
+            //     (!titolo.trim() || e.titolo.toLowerCase().includes(titolo.trim().toLowerCase())) &&
+            //     (!luogo.trim() || e.luogo.toLowerCase().includes(luogo.trim().toLowerCase())) &&
+            //     (!categoria.trim() || e.categoria.toLowerCase().includes(categoria.trim().toLowerCase())) &&
+            //     (!data.trim() || e.data.toLowerCase().includes(data.trim().toLowerCase())) &&
+            //     (!prezzo || e.prezzo == prezzo);
+            // });
+            paolo = (eventi.filter(e => e.titolo === titolo || e.luogo === luogo || e.prezzo == prezzo || e.categoria === categoria || e.data === data));
+            console.log("eventiCercati", eventiCercati);
+            setEventiCercati(paolo)
         }
         console.log("eventiCercati", eventiCercati)
         console.log("eventi", eventi)
