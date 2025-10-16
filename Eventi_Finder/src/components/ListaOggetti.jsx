@@ -21,6 +21,7 @@ export default function ListaOggetti() {
 
     useEffect(() => {
         localStorage.setItem(NOME_LISTA, JSON.stringify(eventi));
+        setEventiCercati(eventi);
     },[eventi]);
 
     function aggiungiEvento() {
@@ -50,13 +51,6 @@ export default function ListaOggetti() {
         if(!titolo.trim() && !data.trim() && !luogo.trim() && !categoria.trim() && !prezzo){
             setEventiCercati(eventi);
         } else {
-            // paolo = eventi.filter(e => {
-            //     (!titolo.trim() || e.titolo.toLowerCase().includes(titolo.trim().toLowerCase())) &&
-            //     (!luogo.trim() || e.luogo.toLowerCase().includes(luogo.trim().toLowerCase())) &&
-            //     (!categoria.trim() || e.categoria.toLowerCase().includes(categoria.trim().toLowerCase())) &&
-            //     (!data.trim() || e.data.toLowerCase().includes(data.trim().toLowerCase())) &&
-            //     (!prezzo || e.prezzo == prezzo);
-            // });
             paolo = (eventi.filter(e => e.titolo === titolo || e.luogo === luogo || e.prezzo == prezzo || e.categoria === categoria || e.data === data));
             console.log("eventiCercati", eventiCercati);
             setEventiCercati(paolo)
@@ -69,8 +63,10 @@ export default function ListaOggetti() {
 
     function eliminaEvento(index) {
         if(window.confirm("Sei sicuro di eliminare questo evento?")) {
-            setEventi(arrayPrecedentementeSalvato => arrayPrecedentementeSalvato.filter((_,i) => i !== index));
-            setEventiCercati(eventi);
+            const aggiornati = eventi.filter((_,i) => i !== index);
+            setEventiCercati(aggiornati);
+            setEventi(aggiornati);
+            return(aggiornati);
         }
     }
 
@@ -136,7 +132,7 @@ export default function ListaOggetti() {
                             type="number"
                             value={prezzo}
                             placeholder="Inserisci prezzo"
-                            onChange={(e) => setPrezzo(e.target.value)}
+                            onChange={(e) => setPrezzo(Number(e.target.value))}
                             required
                             className="form-control mb-3"
                         />
